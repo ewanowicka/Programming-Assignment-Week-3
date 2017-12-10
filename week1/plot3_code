@@ -1,0 +1,27 @@
+#plot3
+
+#read the data
+baza <- read.csv("household_power_consumption.txt", na.strings = "?", sep = ";", header = TRUE)
+
+#subset: only date '1/2/2007' or '2/2/2007'
+baza1<-baza[baza$Date== '1/2/2007' | baza$Date== '2/2/2007',]
+#define new column: date+time
+baza1$Date_time<-strptime(paste(baza1$Date, baza1$Time), format = "%d/%m/%Y %H:%M:%S" )
+#baza1$Date<-as.Date(baza1$Date, format = "%d/%m/%Y")
+#baza1$Time<-strptime(paste(baza1$Date, baza1$Time), format = "%Y-%m-%d %H:%M:%S" )
+
+#plot
+#name of plot
+png(file = "plot3.png")
+#plot x = Date_time, y = Sub_metering_1/_2/_3
+#first line
+plot(baza1$Date_time, baza1$Sub_metering_1, type = "l", xlab = "", ylab = "Energy Submatering")
+#second line
+lines(baza1$Date_time, baza1$Sub_metering_2, col = "red")
+#third line
+lines(baza1$Date_time, baza1$Sub_metering_3, col = "blue")
+#set legend
+legend ("topright", legend = c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"),
+        lty=c(1,1,1), col = c("black", "red", "blue"))
+#save on disk
+dev.off()
