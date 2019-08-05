@@ -1,0 +1,20 @@
+#plot1
+
+
+#read the data
+baza <- read.csv("household_power_consumption.txt", na.strings = "?", sep = ";", header = TRUE)
+
+#subset: only date '1/2/2007' or '2/2/2007'
+baza1<-baza[baza$Date== '1/2/2007' | baza$Date== '2/2/2007',]
+#define new column: date+time
+baza1$Date_time<-strptime(paste(baza1$Date, baza1$Time), format = "%d/%m/%Y %H:%M:%S" )
+#baza1$Date<-as.Date(baza1$Date, format = "%d/%m/%Y")
+#baza1$Time<-strptime(paste(baza1$Date, baza1$Time), format = "%Y-%m-%d %H:%M:%S" )
+
+#plot
+#name of plot
+png(file = "plot1.png")
+#histogram
+hist(baza1$Global_active_power, col ="red", xlab = "Global Active Power (kilowatts)", main = "Global Active Power")
+#save on disk
+dev.off()
